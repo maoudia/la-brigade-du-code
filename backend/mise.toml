@@ -1,0 +1,13 @@
+[env]
+SERVER_PORT  = "8080"
+DB_POOL_SIZE = "5"
+
+[tasks.build]
+description = "Build the backend JAR"
+run = "mvn clean package -DskipTests"
+run_windows = "mvn clean package -DskipTests"
+
+[tasks.test-backend]
+description = "Run backend tests"
+run = "mvn test"
+run_windows = "mvn test"

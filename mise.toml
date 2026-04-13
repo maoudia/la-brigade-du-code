@@ -1,0 +1,302 @@
+# =============================================================
+# La Brigade du Code
+# Single source of truth for all tool versions
+# No .env files needed — mise handles everything securely
+# =============================================================
+
+# --- All versions pinned here, referenced everywhere ---
+[vars]
+JAVA_VERSION = "25"
+NODE_VERSION = "24"
+MAVEN_VERSION = "3.9.14"
+SPRING_BOOT_VERSION = "4.0.5"
+NUXT_VERSION = "4.2.2"
+VITEPRESS_VERSION = "1.6.4"
+
+[tools]
+java = "{{vars.JAVA_VERSION}}"
+node = "{{vars.NODE_VERSION}}"
+"aqua:apache/maven" = "{{vars.MAVEN_VERSION}}"
+
+[settings]
+experimental = true
+lockfile = true
+
+[env]
+CHEF_NAME = "Chef"
+APP_ENV = "development"
+_.file = ".env.local"
+
+[hooks]
+enter = { task = "banner" }
+
+# ---- Tasks -----------------------------------------------
+
+[tasks.banner]
+description = "Show the full kitchen status"
+run = """
+echo ""
+echo "======================================="
+echo "   La Brigade du Code \U0001f373"
+echo "======================================="
+echo "   Chef     : $CHEF_NAME"
+echo "   ENV      : $APP_ENV"
+echo "---------------------------------------"
+echo "\U0001f6e0\ufe0f  System Tools:"
+printf "   \U0001f333 git             %s\\n" "$(git --version 2>/dev/null | awk '{print $3}' || echo 'not found')"
+printf "   \U0001f433 docker          %s\\n" "$(docker --version 2>/dev/null | awk '{print $3}' | tr -d ',' || echo 'not found — install docker or podman')"
+printf "   \U0001f419 docker compose  %s\\n" "$(docker compose version 2>/dev/null | awk '{print $4}' || echo 'not found')"
+DOCKER_INFO=$(docker --version 2>/dev/null || echo "not found"); if echo "$DOCKER_INFO" | grep -qi podman; then printf "   \U0001f4e6 engine          Podman\\n"; elif echo "$DOCKER_INFO" | grep -qi docker; then printf "   \U0001f4e6 engine          Docker\\n"; fi
+echo "---------------------------------------"
+echo "\U0001f4e6 mise Tools:"
+printf "   \u2615 java    %s\\n" "$(java --version 2>&1 | head -1)"
+printf "   \U0001f7e2 node    %s\\n" "$(node --version 2>/dev/null || echo 'not found')"
+printf "   \U0001f4e6 maven   %s\\n" "$(mvn --version 2>&1 | head -1)"
+echo "---------------------------------------"
+printf "   mise     %s\\n" "$(mise --version)"
+echo "======================================="
+echo ""
+"""
+run_windows = "mise run banner-windows"
+
+[tasks."banner-windows"]
+description = "Show the full kitchen status (Windows)"
+hide = true
+run = """
+@echo off
+echo.
+echo =======================================
+echo    La Brigade du Code
+echo =======================================
+echo    Chef     : %CHEF_NAME%
+echo    ENV      : %APP_ENV%
+echo =======================================
+for /f "tokens=3" %%v in ('git --version 2^>^&1') do echo    git             %%v
+for /f "tokens=3 delims=, " %%v in ('docker --version 2^>^&1') do echo    docker          %%v
+echo =======================================
+"""
+
+[tasks.brigade]
+description = "Verify all tools are ready for service"
+run = """
+echo "Checking the brigade..."
+java --version 2>&1 | head -1
+node --version
+mvn --version 2>&1 | head -1
+docker --version 2>/dev/null || echo "docker: not found (optional)"
+echo ""
+echo "La brigade est prete ! \U0001f373"
+"""
+run_windows = """
+java --version
+node --version
+mvn --version
+docker --version 2>nul || echo docker: not found (optional)
+echo La brigade est prete !
+"""
+
+[tasks.versions]
+description = "Show all pinned versions"
+run = """
+echo "=== Pinned Versions ==="
+echo "Java         : {{vars.JAVA_VERSION}}"
+echo "Node         : {{vars.NODE_VERSION}}"
+echo "Maven        : {{vars.MAVEN_VERSION}}"
+echo "Spring Boot  : {{vars.SPRING_BOOT_VERSION}}"
+echo "Nuxt         : {{vars.NUXT_VERSION}}"  # 4.2.2 — latest on npm
+echo "VitePress    : {{vars.VITEPRESS_VERSION}}"
+"""
+
+[tasks."kill:ports"]
+description = "Free ports 8080 and 3000"
+file = "mise/tasks/kill-ports.sh"
+
+# ── Diagrams ─────────────────────────────────────────────────────────────
+
+[tasks."diagrams:render"]
+description = "Render all PlantUML diagrams to SVG (requires plantuml.jar in repo root)"
+run = """
+JAR="${PLANTUML_JAR:-plantuml.jar}"
+if [ ! -f "$JAR" ]; then
+  echo "Downloading PlantUML JAR..."
+  curl -fsSL -o "$JAR" "https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar"
+fi
+for f in diagrams/*.puml; do
+  java -jar "$JAR" -tsvg "$f"
+  echo "✓ Rendered $f"
+done
+echo "All diagrams rendered to diagrams/*.svg"
+"""
+run_windows = """
+if not exist plantuml.jar (
+  curl -fsSL -o plantuml.jar "https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar"
+)
+for %f in (diagrams\\*.puml) do java -jar plantuml.jar -tsvg "%f"
+echo All diagrams rendered.
+"""
+
+# ── Infra ────────────────────────────────────────────────────────────────
+# Starts PostgreSQL (and only PostgreSQL) via docker compose
+# backend depends on this — guarantees DB is healthy before Spring Boot starts
+
+[tasks.infra]
+description = "Start infrastructure (PostgreSQL only)"
+run = "docker compose up postgres -d --wait"
+run_windows = "docker compose up postgres -d --wait"
+
+[tasks."infra:down"]
+description = "Stop infrastructure"
+run = "docker compose down"
+run_windows = "docker compose down"
+
+# ── Backend ──────────────────────────────────────────────────────────────
+
+[tasks.backend]
+description = "Start Spring Boot backend on :8080 (starts infra first)"
+depends = ["infra"]
+dir = "backend"
+run = "mvn spring-boot:run"
+run_windows = "mvn spring-boot:run"
+
+# ── Frontend ─────────────────────────────────────────────────────────────
+
+[tasks.install-frontend]
+description = "Install frontend dependencies"
+dir = "frontend"
+run = "npm install"
+run_windows = "npm install"
+
+[tasks.frontend]
+description = "Start Nuxt frontend on :3000 (installs deps first)"
+depends = ["install-frontend"]
+dir = "frontend"
+run = "npm run dev"
+run_windows = "npm run dev"
+
+[tasks."frontend:open"]
+description = "Open the Nuxt frontend in your default browser"
+run = """
+if command -v xdg-open &>/dev/null; then
+  xdg-open http://localhost:3000
+elif command -v open &>/dev/null; then
+  open http://localhost:3000
+else
+  echo "Open http://localhost:3000 in your browser"
+fi
+"""
+run_windows = "start http://localhost:3000"
+
+# ── Service ──────────────────────────────────────────────────────────────
+# Full dependency chain:
+#   service
+#   ├── backend  → infra (postgres healthcheck)
+#   └── frontend → install-frontend
+
+[tasks.service]
+description = "Start the full brigade (infra → backend + frontend in parallel)"
+depends = ["backend", "frontend"]
+
+# ── Full stack via Docker ─────────────────────────────────────────────────
+
+[tasks.docker]
+description = "Start full stack with Docker Compose (all services)"
+run = "docker compose up --build"
+run_windows = "docker compose up --build"
+
+[tasks.install-docs]
+description = "Install VitePress docs dependencies"
+dir = "docs"
+run = "npm install"
+run_windows = "npm install"
+
+[tasks."docs:dev"]
+description = "Start VitePress docs dev server"
+dir = "docs"
+run = "npx vitepress dev"
+run_windows = "npx vitepress dev"
+
+[tasks."docs:build"]
+description = "Build VitePress docs for production"
+dir = "docs"
+run = "npx vitepress build"
+run_windows = "npx vitepress build"
+
+[tasks."docs:preview"]
+description = "Preview built VitePress docs locally"
+dir = "docs"
+run = "npx vitepress preview"
+run_windows = "npx vitepress preview"
+
+[tasks.lint]
+description = "Lint — runs in pre-commit hook"
+run = "echo 'Checking recipes for mistakes... OK'"
+run_windows = "echo Checking recipes for mistakes... OK"
+
+[tasks.format]
+description = "Format mise.toml"
+run = "mise fmt"
+run_windows = "mise fmt"
+
+[tasks.check]
+description = "Run all checks before service"
+depends = ["lint", "format"]
+
+[tasks.release]
+description = "Deploy docs to GitHub Pages"
+confirm = "Are you sure you want to deploy La Brigade du Code to GitHub Pages?"
+depends = ["docs:build"]
+run = "echo 'Deploying... check GitHub Actions for status'"
+
+[tasks.cleanup]
+description = "Remove unused tool versions"
+run = "mise prune"
+run_windows = "mise prune"
+hide = true
+
+[tasks.setup]
+description = "Full setup after clone — installs tools and shows banner"
+run = """
+echo "Setting up La Brigade du Code..."
+mise install
+mise run banner
+"""
+run_windows = """
+mise install
+mise run banner-windows
+"""
+
+[tasks."slides:dev"]
+description = "Start reveal.js slides — open index.html in browser or run http-server"
+dir = "slides"
+run = "npx --yes http-server . -p 1948 -o index.html --cors"
+run_windows = "npx --yes http-server . -p 1948 -o index.html --cors"
+
+[tasks."slides:build"]
+description = "Build slides to static HTML (no npm install needed — CDN-based)"
+dir = "slides"
+run = "mkdir -p _dist/theme && cp index.html _dist/ && cp theme/*.css _dist/theme/ && echo 'Slides copied to _dist/'"
+run_windows = "if not exist _dist\\theme mkdir _dist\\theme && copy index.html _dist\\ && copy theme\\*.css _dist\\theme\\ && echo Slides copied"
+
+[tasks."slides:pdf"]
+description = "Export slides to PDF via decktape (Puppeteer)"
+dir = "slides"
+run = "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf && echo '✓ Exported to slides.pdf'"
+run_windows = "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf"
+
+[tasks."slides:install"]
+description = "No install needed — slides use CDN reveal.js 5.1.0"
+dir = "slides"
+run = "echo 'No npm install needed — slides/index.html uses CDN'"
+run_windows = "echo No npm install needed"
+
+[tasks."hosts:add"]
+description = "Add brigade.io to /etc/hosts for local prod simulation"
+file = "mise/tasks/hosts-add.sh"
+
+[tasks."hosts:remove"]
+description = "Remove brigade.io from /etc/hosts"
+file = "mise/tasks/hosts-remove.sh"
+
+[tasks."docker:prod"]
+description = "Simulate production locally with brigade.io"
+run = "mise run hosts:add && MISE_ENV=production docker compose -f docker-compose.prod.yml up --build"

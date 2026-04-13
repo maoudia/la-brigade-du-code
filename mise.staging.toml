@@ -1,0 +1,11 @@
+# =============================================================
+# Staging environment — Docker services on different ports
+# Usage: MISE_ENV=staging mise run service
+# =============================================================
+
+[env]
+APP_ENV              = "staging"
+DATABASE_URL         = "postgresql://brigade:brigade@localhost:5433/brigade_staging"
+NUXT_PUBLIC_API_URL  = "http://localhost:8081"
+LOG_LEVEL            = "INFO"
+COMPOSE_FILE         = "docker-compose.staging.yml"

@@ -1,0 +1,37 @@
+# mise
+.mise/
+.mise.local.toml
+mise.local.lock
+
+# Secrets — never commit
+.env.local
+.env.*.local
+
+# Java
+target/
+*.class
+*.jar
+!*-sources.jar
+
+# Node
+node_modules/
+package-lock.json
+.nuxt/
+.output/
+dist/
+
+# VitePress
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# IDE
+.idea/
+.vscode/settings.json
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/

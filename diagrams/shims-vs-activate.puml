@@ -1,0 +1,75 @@
+@startuml shims-vs-activate
+skinparam backgroundColor white
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam PackageBorderColor #94A3B8
+skinparam PackageBorderThickness 1
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #1E293B
+skinparam PackageBackgroundColor #F8FAFC
+
+skinparam RectangleBorderColor #94A3B8
+skinparam RectangleBorderThickness 1
+skinparam RectangleFontColor #1E293B
+skinparam RectangleFontSize 12
+skinparam RectangleShadowing false
+
+skinparam ActorBorderColor #475569
+skinparam ActorBackgroundColor #F5F5F4
+skinparam ActorFontColor #1E293B
+skinparam ActorFontSize 12
+
+skinparam NoteBorderColor #94A3B8
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteFontColor #78350F
+skinparam NoteFontSize 11
+
+title "<b>Shims vs Activate</b> — When to Use Which"
+
+left to right direction
+
+package "mise activate (interactive shell)" #EFF6FF {
+  actor "Terminal\n(bash/zsh/fish)" as terminal
+  rectangle "PATH updated\non every cd" as path     #DBEAFE
+  rectangle "Env vars\ninjected live" as envvars    #DBEAFE
+}
+
+package "Shims (~/.local/share/mise/shims/)" #F0FDFA {
+  rectangle "java shim" as jshim  #CCFBF1
+  rectangle "node shim" as nshim  #CCFBF1
+  rectangle "mvn shim"  as mshim  #CCFBF1
+
+  note bottom of jshim
+    Each shim:
+    1. reads current dir
+    2. checks mise.toml
+    3. routes to right version
+  end note
+}
+
+package "Consumers" #FAFAF9 {
+  actor "IntelliJ IDEA"      as intellij
+  actor "VSCode"             as vscode
+  actor "GitHub Actions"     as ci
+  actor "git hooks\n(pre-commit)" as hooks
+}
+
+terminal -right-> path    : eval "$(mise activate zsh)"
+terminal -right-> envvars
+
+intellij -right-> jshim : SDK path\n~/.local/.../shims/java
+vscode   -right-> nshim : node path\n~/.local/.../shims/node
+ci       -right-> jshim : mise-action@v4\nadds shims to PATH
+hooks    -right-> mshim : pre-commit\nmvn checkstyle
+
+note top of intellij
+  IDEs DON'T source your shell
+  They need a STABLE fixed path
+  Shims = that stable path
+end note
+
+@enduml

@@ -1,0 +1,99 @@
+@startuml bootstrap-flow
+skinparam backgroundColor white
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam ActivityBorderColor #94A3B8
+skinparam ActivityBorderThickness 1
+skinparam ActivityBackgroundColor #EDE9FE
+skinparam ActivityFontColor #1E293B
+skinparam ActivityFontSize 12
+skinparam ActivityShadowing false
+
+skinparam ActivityDiamondBorderColor #94A3B8
+skinparam ActivityDiamondBackgroundColor #FEF3C7
+skinparam ActivityDiamondFontColor #1E293B
+skinparam ActivityDiamondFontSize 12
+
+skinparam PartitionBorderColor #94A3B8
+skinparam PartitionBorderThickness 1
+skinparam PartitionFontStyle bold
+skinparam PartitionFontColor #1E293B
+skinparam PartitionBackgroundColor #F8FAFC
+
+skinparam NoteBorderColor #94A3B8
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteFontColor #78350F
+skinparam NoteFontSize 11
+
+title "<b>Zero-Prerequisite Onboarding</b>\nbin/setup bootstrap flow"
+
+start
+
+:git clone repo;
+:cd la-brigade-du-code;
+:run ./bin/setup;
+
+partition "Pre-flight Check" {
+  :Check git version;
+  if (git found?) then (yes)
+    :show version;
+  else (no)
+    :show install link;
+    stop
+  endif
+
+  :Check docker version;
+  if (docker found?) then (yes)
+    :show version;
+  else (no)
+    :show install link;
+    stop
+  endif
+
+  :Check docker compose;
+  if (compose found?) then (yes)
+    :show version;
+  else (no)
+    :show install link;
+    stop
+  endif
+}
+
+partition "mise Bootstrap" {
+  if (mise in PATH?) then (yes)
+    :use global mise;
+  else (no)
+    :bin/mise downloads mise\ninto .mise/ locally;
+    note right
+      Does NOT touch:
+      - ~/.bashrc
+      - ~/.zshrc
+      - global PATH
+      Same pattern as mvnw
+    end note
+  endif
+}
+
+partition "Tool Installation" {
+  :mise install;
+  note right
+    Installs from mise.toml:
+    - Java 25
+    - Node 24
+    - Maven 3.9.14
+  end note
+
+  :mise trust;
+  :mise run banner;
+}
+
+:Show kitchen status\nbanner with all versions;
+:Ready to cook!;
+
+stop
+
+@enduml

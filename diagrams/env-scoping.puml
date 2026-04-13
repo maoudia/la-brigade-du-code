@@ -1,0 +1,60 @@
+@startuml env-scoping
+skinparam backgroundColor white
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam PackageBorderColor #94A3B8
+skinparam PackageBorderThickness 1
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #1E293B
+skinparam PackageBackgroundColor #F8FAFC
+
+skinparam RectangleBorderColor #94A3B8
+skinparam RectangleBorderThickness 1
+skinparam RectangleFontColor #1E293B
+skinparam RectangleFontSize 12
+skinparam RectangleShadowing false
+
+skinparam NoteBorderColor #94A3B8
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteFontColor #78350F
+skinparam NoteFontSize 11
+
+title "<b>mise Environment Scoping</b>\nParent → Child Inheritance"
+
+package "/ (root)" #EFF6FF {
+  rectangle "<b>mise.toml</b>\nCHEF_NAME = Chef\nAPP_ENV = development\n_.file = .env.local" as root #DBEAFE
+}
+
+package "MISE_ENV profiles" #F0F9FF {
+  rectangle "<b>mise.development.toml</b>\nDATABASE_URL = localhost:5432/dev\nLOG_LEVEL = DEBUG" as dev #E0F2FE
+  rectangle "<b>mise.staging.toml</b>\nDATABASE_URL = localhost:5433/staging\nLOG_LEVEL = INFO" as staging #E0F2FE
+}
+
+package "/backend" #FFF7ED {
+  rectangle "<b>backend/mise.toml</b>\nSERVER_PORT = 8080\nDB_POOL_SIZE = 5\n+ inherits root vars\n- no NUXT vars" as backend #FFEDD5
+}
+
+package "/frontend" #F0FDF4 {
+  rectangle "<b>frontend/mise.toml</b>\nNUXT_PUBLIC_API_URL = :8080\nNUXT_PORT = 3000\n+ inherits root vars\n- no SERVER_PORT" as frontend #DCFCE7
+}
+
+root -down-> backend  : inherits
+root -down-> frontend : inherits
+root -right-> dev     : MISE_ENV=development
+root -right-> staging : MISE_ENV=staging
+
+note bottom of backend
+  cd backend && mise env
+  shows SERVER_PORT but NOT NUXT vars
+end note
+
+note bottom of frontend
+  cd frontend && mise env
+  shows NUXT vars but NOT SERVER_PORT
+end note
+
+@enduml

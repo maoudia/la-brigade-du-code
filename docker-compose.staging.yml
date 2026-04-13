@@ -1,0 +1,30 @@
+# Staging — MISE_ENV=staging mise run docker
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: brigade_staging
+      POSTGRES_USER: brigade
+      POSTGRES_PASSWORD: brigade
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_staging:/var/lib/postgresql/data
+  backend:
+    build: ./backend
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/brigade_staging
+      SPRING_DATASOURCE_USERNAME: brigade
+      SPRING_DATASOURCE_PASSWORD: brigade
+      APP_ENV: staging
+  frontend:
+    build: ./frontend
+    ports:
+      - "3001:3000"
+    environment:
+      NUXT_PUBLIC_API_URL: http://backend:8080
+
+volumes:
+  postgres_staging:

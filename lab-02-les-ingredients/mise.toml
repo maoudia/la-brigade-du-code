@@ -1,0 +1,19 @@
+# Lab 02 — Les Ingrédients
+# BUG: VITE_API_URL should NOT be here — move it to frontend/mise.toml
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME       = "???"       # TODO: your first name
+APP_ENV         = "development"
+DATABASE_URL    = "postgresql://localhost:5432/brigade_dev"
+VITE_API_URL    = "http://localhost:8080"  # BUG: belongs in frontend/
+
+# TODO: uncomment to load .env.local
+# _.file = "???"

@@ -1,0 +1,79 @@
+# =============================================================
+# La Brigade du Code — Weekly Dependency Update
+# Runs every Monday at 08:00 UTC
+# Opens a PR if tool versions are outdated
+# =============================================================
+
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: update-dependencies
+  cancel-in-progress: true
+
+jobs:
+  update:
+    name: Check outdated tools
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup mise
+        uses: jdx/mise-action@v4
+        with:
+          version: "2026.4.8"
+          install: true
+          cache: true
+          cache_key: "mise-v1-{{platform}}-{{version}}-{{file_hash}}"
+          experimental: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check outdated tools
+        id: outdated
+        run: |
+          OUTPUT=$(mise outdated 2>&1)
+          echo "$OUTPUT"
+          echo "outdated<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upgrade tools and update lockfile
+        run: |
+          mise upgrade --bump
+          mise lock
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Open PR if changes
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update mise tool versions"
+          title: "chore: weekly tool version update 🍳"
+          body: |
+            ## Weekly tool update
+
+            mise detected outdated tools and bumped versions automatically.
+
+            ### Changes detected
+            ```
+            ${{ steps.outdated.outputs.outdated }}
+            ```
+
+            ### Checklist
+            - [ ] Review version changes
+            - [ ] Check CHANGELOGs for breaking changes
+            - [ ] Verify CI passes on all OS matrix
+          branch: chore/update-mise-tools
+          delete-branch: true
+          labels: dependencies

@@ -1,0 +1,11 @@
+{
+  "name": "brigade-slides",
+  "version": "0.1.0",
+  "private": true,
+  "description": "La Brigade du Code — reveal.js slides (CDN-based, zero npm deps)",
+  "scripts": {
+    "dev": "npx --yes http-server . -p 1948 -o index.html --cors",
+    "build": "mkdir -p _dist && cp index.html _dist/ && echo Slides copied to _dist/",
+    "pdf": "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf"
+  }
+}

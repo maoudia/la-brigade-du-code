@@ -1,0 +1,13 @@
+[env]
+NUXT_PUBLIC_API_URL = "http://localhost:8080"
+NUXT_PORT           = "3000"
+
+[tasks.install-deps]
+description = "Install frontend dependencies"
+run = "npm install"
+run_windows = "npm install"
+
+[tasks.test-frontend]
+description = "Run frontend type check"
+run = "npx nuxi typecheck"
+run_windows = "npx nuxi typecheck"

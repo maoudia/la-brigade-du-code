@@ -1,0 +1,14 @@
+# Lab 02 — Solution
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME    = "Moncef"
+APP_ENV      = "development"
+DATABASE_URL = "postgresql://localhost:5432/brigade_dev"
+_.file       = ".env.local"

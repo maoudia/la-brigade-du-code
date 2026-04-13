@@ -1,0 +1,11 @@
+# =============================================================
+# Development environment — local Docker services
+# Usage: MISE_ENV=development mise run service (default)
+# =============================================================
+
+[env]
+APP_ENV              = "development"
+DATABASE_URL         = "postgresql://brigade:brigade@localhost:5432/brigade_dev"
+NUXT_PUBLIC_API_URL  = "http://localhost:8080"
+LOG_LEVEL            = "DEBUG"
+COMPOSE_FILE         = "docker-compose.yml"

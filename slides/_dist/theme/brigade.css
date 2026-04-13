@@ -1,0 +1,509 @@
+/**
+ * La Brigade du Code — reveal.js theme
+ * Inspired by professional kitchen aesthetics:
+ * dark steel, hot orange, clean whites, monospace code
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+/* ── Root variables ──────────────────────────────────────────── */
+:root {
+  --bg:        #0F1117;
+  --bg-card:   #1A1D2E;
+  --bg-code:   #0D1117;
+  --accent:    #F97316;
+  --accent2:   #FB923C;
+  --green:     #22C55E;
+  --blue:      #3B82F6;
+  --yellow:    #EAB308;
+  --red:       #EF4444;
+  --white:     #F8FAFC;
+  --gray:      #64748B;
+  --gray-light:#94A3B8;
+  --border:    rgba(248,250,252,0.08);
+  --r:         8px;
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+.reveal-viewport { background: var(--bg); }
+
+.reveal {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 36px;
+  color: var(--white);
+}
+
+.reveal .slides { text-align: left; }
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 0.5em;
+}
+
+.reveal h1 { font-size: 2.4em; line-height: 1.1; }
+.reveal h2 { font-size: 1.6em; color: var(--white); }
+.reveal h3 { font-size: 1.1em; color: var(--accent); margin-bottom: 0.3em; }
+
+.reveal p { margin: 0.5em 0; line-height: 1.6; }
+
+.reveal strong { color: var(--white); font-weight: 700; }
+.reveal em     { color: var(--accent2); font-style: italic; }
+.reveal small  { font-size: 0.7em; color: var(--gray-light); }
+.reveal a      { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(59,130,246,0.3); }
+.reveal a:hover{ color: var(--accent); border-color: var(--accent); }
+
+/* ── Code ───────────────────────────────────────────────────── */
+.reveal pre {
+  width: 100%;
+  box-shadow: 0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.4);
+  border-radius: var(--r);
+  margin: 0.5em 0;
+}
+
+.reveal pre code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72em;
+  line-height: 1.6;
+  padding: 1em 1.2em;
+  background: var(--bg-code);
+  border-radius: var(--r);
+  max-height: 360px;
+}
+
+.reveal code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.82em;
+  background: rgba(248,250,252,0.08);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+/* ── Progress / Controls ────────────────────────────────────── */
+.reveal .progress { background: rgba(249,115,22,0.2); height: 3px; }
+.reveal .progress span { background: var(--accent); }
+.reveal .controls { color: var(--accent); }
+
+/* ── Slide number ───────────────────────────────────────────── */
+.reveal .slide-number { background: var(--bg-card); color: var(--gray); font-size: 14px; border-radius: 4px; padding: 2px 8px; }
+
+/* ── Top accent bar on every slide ──────────────────────────── */
+.reveal .slides section::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--yellow), var(--green));
+  border-radius: 2px 2px 0 0;
+}
+
+/* ── Title slide ────────────────────────────────────────────── */
+.reveal .title-slide { text-align: center; }
+
+.reveal .title-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  font-size: 0.4em;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6em;
+}
+
+.reveal .subtitle {
+  font-size: 0.55em;
+  color: var(--gray-light);
+  font-style: italic;
+  margin: 0.3em 0 0.8em;
+}
+
+.reveal .tagline {
+  font-size: 0.42em;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-bottom: 1.2em;
+}
+
+.reveal .version-grid {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0.8em 0;
+}
+
+.reveal .v-badge {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.38em;
+  color: var(--gray-light);
+}
+
+.reveal .v-badge span {
+  color: var(--accent);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.reveal .gh-link {
+  font-size: 0.38em;
+  color: var(--gray);
+  margin-top: 1em;
+  font-family: 'Fira Code', monospace;
+}
+
+/* ── Problem grid ───────────────────────────────────────────── */
+.reveal .problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0.6em 0;
+}
+
+.reveal .problem-card {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  padding: 16px;
+  border-radius: var(--r);
+  font-size: 0.52em;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.reveal .callout-danger {
+  background: rgba(239,68,68,0.1);
+  border-left: 3px solid var(--red);
+  padding: 12px 16px;
+  border-radius: 0 var(--r) var(--r) 0;
+  font-size: 0.48em;
+  color: var(--red);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.8em;
+}
+
+/* ── Solution ───────────────────────────────────────────────── */
+.reveal .solution-center { text-align: center; }
+
+.reveal .solution-badge {
+  background: var(--green);
+  color: #000;
+  font-size: 0.44em;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-top: 0.8em;
+}
+
+/* ── Labs grid ──────────────────────────────────────────────── */
+.reveal .labs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 0.4em 0;
+}
+
+.reveal .lab-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 10px;
+  text-align: center;
+  font-size: 0.42em;
+  line-height: 1.6;
+  position: relative;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.reveal .lab-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.reveal .lab-card .ln {
+  position: absolute;
+  top: 6px; right: 8px;
+  font-size: 0.85em;
+  color: var(--accent);
+  font-weight: 700;
+  font-family: 'Fira Code', monospace;
+}
+
+.reveal .lab-card strong { display: block; color: var(--white); margin-top: 4px; }
+.reveal .lab-card small  { color: var(--gray-light); }
+
+/* ── Setup steps ────────────────────────────────────────────── */
+.reveal .setup-steps {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px 24px;
+  font-size: 0.52em;
+  line-height: 2;
+}
+
+/* ── Two column layout ──────────────────────────────────────── */
+.reveal .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Callouts ───────────────────────────────────────────────── */
+.reveal .callout-info {
+  background: rgba(59,130,246,0.1);
+  border-left: 3px solid var(--blue);
+  padding: 10px 16px;
+  border-radius: 0 var(--r) var(--r) 0;
+  font-size: 0.46em;
+  color: var(--blue);
+  margin-top: 0.6em;
+}
+
+.reveal .callout-success {
+  background: rgba(34,197,94,0.1);
+  border-left: 3px solid var(--green);
+  padding: 10px 16px;
+  border-radius: 0 var(--r) var(--r) 0;
+  font-size: 0.46em;
+  color: var(--green);
+  margin-top: 0.6em;
+}
+
+.reveal .callout-warning {
+  background: rgba(234,179,8,0.1);
+  border: 1px solid rgba(234,179,8,0.3);
+  padding: 12px 16px;
+  border-radius: var(--r);
+  font-size: 0.46em;
+  color: var(--yellow);
+  margin-top: 0.6em;
+  line-height: 1.8;
+}
+
+/* ── Terminal demo ──────────────────────────────────────────── */
+.reveal .terminal-demo pre code {
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Env demo ───────────────────────────────────────────────── */
+.reveal .env-demo pre code {
+  border-left: 3px solid var(--green);
+}
+
+/* ── Task features table ────────────────────────────────────── */
+.reveal .task-features {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  font-size: 0.48em;
+}
+
+.reveal .task-features table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5em 0;
+}
+
+.reveal .task-features th {
+  color: var(--accent);
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9em;
+}
+
+.reveal .task-features td {
+  padding: 4px 8px;
+  color: var(--gray-light);
+}
+
+/* ── Parallel service demo ──────────────────────────────────── */
+.reveal .parallel-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0.6em 0;
+}
+
+.reveal .sbox {
+  border-radius: var(--r);
+  padding: 16px 20px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.46em;
+  line-height: 1.7;
+}
+
+.reveal .sbox.be {
+  background: rgba(237,139,0,0.1);
+  border: 1px solid rgba(237,139,0,0.3);
+}
+
+.reveal .sbox.fe {
+  background: rgba(104,160,99,0.1);
+  border: 1px solid rgba(104,160,99,0.3);
+}
+
+.reveal .sbox span {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.reveal .sbox.be span { color: #ED8B00; }
+.reveal .sbox.fe span { color: #68A063; }
+
+/* ── CI grid ────────────────────────────────────────────────── */
+.reveal .ci-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0.5em 0;
+}
+
+.reveal .ci-card {
+  border-radius: var(--r);
+  padding: 16px;
+  font-size: 0.46em;
+}
+
+.reveal .ci-card h4 {
+  font-size: 1.2em;
+  margin: 0 0 4px;
+  font-family: 'Fira Code', monospace;
+}
+
+.reveal .ci-card small { display: block; margin-bottom: 8px; }
+.reveal .ci-card ul { margin: 0; padding-left: 16px; line-height: 1.8; }
+.reveal .ci-card code { font-size: 0.9em; }
+
+.reveal .ci-blue   { background: rgba(59,130,246,0.1);  border: 1px solid rgba(59,130,246,0.3); }
+.reveal .ci-blue h4{ color: var(--blue); }
+.reveal .ci-green  { background: rgba(34,197,94,0.1);   border: 1px solid rgba(34,197,94,0.3); }
+.reveal .ci-green h4{ color: var(--green); }
+.reveal .ci-yellow { background: rgba(234,179,8,0.1);   border: 1px solid rgba(234,179,8,0.3); }
+.reveal .ci-yellow h4{ color: var(--yellow); }
+
+/* ── Chef grid ──────────────────────────────────────────────── */
+.reveal .chef-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.reveal .chef-features {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  font-size: 0.50em;
+  line-height: 2.0;
+}
+
+/* ── AI prompts ─────────────────────────────────────────────── */
+.reveal .ai-prompts {
+  background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(249,115,22,0.08));
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: var(--r);
+  padding: 20px 24px;
+  margin: 0.6em 0;
+  font-size: 0.50em;
+  line-height: 2.2;
+}
+
+.reveal .ai-prompts strong { color: var(--blue); display: block; margin-bottom: 0.4em; }
+
+/* ── Meta slide ─────────────────────────────────────────────── */
+.reveal .meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0.4em 0;
+  font-size: 0.52em;
+}
+
+.reveal .meta-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 16px;
+  color: var(--green);
+}
+
+.reveal .meta-quote {
+  text-align: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.70em;
+  color: var(--accent);
+  margin-top: 0.8em;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ── Final slide ────────────────────────────────────────────── */
+.reveal .final-slide { text-align: center; }
+
+.reveal .final-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 0.8em 0;
+}
+
+.reveal .final-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 12px;
+  font-size: 0.42em;
+  text-align: center;
+  line-height: 1.8;
+  transition: border-color 0.2s;
+}
+
+.reveal .final-card:hover { border-color: var(--accent); }
+.reveal .final-card strong { display: block; color: var(--accent); margin-bottom: 4px; }
+.reveal .final-card a { font-size: 0.9em; border: none; }
+
+.reveal .final-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.7em;
+  color: var(--accent);
+  font-style: italic;
+  margin-top: 0.8em;
+}
+
+/* ── Fragments ──────────────────────────────────────────────── */
+.reveal .fragment {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+  transform: translateY(10px);
+}
+
+.reveal .fragment.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(0);
+}
+
+/* ── Scrollable code blocks ─────────────────────────────────── */
+.reveal pre code { overflow-y: auto; }
+
+/* ── Speaker notes hint ─────────────────────────────────────── */
+.reveal aside.notes { font-size: 0.9em; line-height: 1.5; }

@@ -1,0 +1,59 @@
+# =============================================================
+# La Brigade du Code — CI
+# Verifies the codelab on all platforms
+# Uses jdx/mise-action@v4 with full cache + Handlebars key
+# =============================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify — ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # -------------------------------------------------------
+      # mise-action@v4 — Node.js 24 runtime
+      # cache_key: per-platform + mise version + config hash
+      # github_token: avoids GitHub API rate limits
+      # -------------------------------------------------------
+      - name: Setup mise
+        uses: jdx/mise-action@v4
+        with:
+          version: "2026.4.8"
+          install: true
+          cache: true
+          cache_key: "mise-v1-{{platform}}-{{version}}-{{file_hash}}"
+          experimental: true
+          log_level: info
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify tool versions
+        run: mise run brigade
+
+      - name: Show mise doctor
+        run: mise doctor
+
+      - name: Show all versions
+        run: mise run versions

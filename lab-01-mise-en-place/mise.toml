@@ -1,0 +1,26 @@
+# Lab 01 — La Mise en Place
+# TODO: replace ??? with real LTS/stable versions
+
+[tools]
+java  = "???"
+node  = "???"
+maven = "???"
+
+[settings]
+experimental = true
+lockfile = true
+
+[tasks.brigade]
+description = "Verify the brigade is ready for service"
+run = """
+echo ""
+echo "======================================="
+echo "   La Brigade du Code 🍳"
+echo "======================================="
+echo "   Java  : $(java --version 2>&1 | head -1)"
+echo "   Node  : $(node --version)"
+echo "   Maven : $(mvn --version 2>&1 | head -1)"
+echo "======================================="
+echo ""
+"""
+run_windows = "java --version && node --version && mvn --version"

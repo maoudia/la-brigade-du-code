@@ -1,0 +1,30 @@
+# Lab 05 — Solution
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "Moncef"
+APP_ENV   = "development"
+_.file    = ".env.local"
+
+[tasks.service]
+description = "Start the full brigade in parallel"
+depends     = ["backend", "frontend"]
+
+[tasks.backend]
+description = "Start Spring Boot backend on :8080"
+dir         = "backend"
+run         = "mvn spring-boot:run"
+run_windows = "mvn spring-boot:run"
+
+[tasks.frontend]
+description = "Start Nuxt frontend on :3000"
+dir         = "frontend"
+run         = "npm run dev"
+run_windows = "npm run dev"

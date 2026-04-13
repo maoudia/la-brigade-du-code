@@ -1,0 +1,44 @@
+# Lab 03 — Les Recettes
+# TODO: fill in task bodies and wire up dependencies
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "???"
+APP_ENV   = "development"
+
+[tasks.prep]
+description = "???"
+run         = "???"
+run_windows = "???"
+
+[tasks.cook]
+description = "???"
+depends     = ["???"]
+run         = "???"
+run_windows = "???"
+
+[tasks.plate]
+description = "???"
+depends     = ["???"]
+run         = "???"
+run_windows = "???"
+
+[tasks.serve]
+description = "???"
+depends     = ["???"]
+confirm     = "Are you sure the dish is ready to serve?"
+run         = "???"
+run_windows = "???"
+
+[tasks.announce]
+description = "Announce a dish to the dining room"
+usage       = 'arg "<dish>" help="Name of the dish to announce"'
+run         = 'echo "Tonight we serve: $usage_dish !"'
+run_windows = 'echo Tonight we serve: %usage_dish% !'

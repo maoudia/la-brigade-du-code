@@ -1,0 +1,31 @@
+# Lab 07 — Le Sous-Chef Digital
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "???"
+APP_ENV   = "development"
+
+[tasks.mcp-start]
+description = "Start mise MCP server"
+run         = "mise mcp"
+run_windows = "mise mcp"
+
+[tasks.ai-prompt]
+description = "Show suggested AI prompts"
+run = """
+echo "Suggested prompts for your AI agent:"
+echo ""
+echo "  'What tools am I using in this project?'"
+echo "  'What tasks are available?'"
+echo "  'What Java version is pinned and why?'"
+echo "  'Suggest a mise task to run integration tests'"
+echo "  'What MISE_ENV profiles are configured?'"
+"""
+run_windows = "echo See README.md for AI prompt suggestions"

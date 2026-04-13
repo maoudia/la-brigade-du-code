@@ -1,0 +1,18 @@
+# Lab 07 — Solution
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "Moncef"
+APP_ENV   = "development"
+
+[tasks.mcp-start]
+description = "Start mise MCP server"
+run         = "mise mcp"
+run_windows = "mise mcp"

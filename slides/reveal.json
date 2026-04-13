@@ -1,0 +1,16 @@
+{
+  "theme": "./theme/brigade.css",
+  "highlightTheme": "atom-one-dark",
+  "revealOptions": {
+    "transition": "slide",
+    "transitionSpeed": "fast",
+    "controls": true,
+    "progress": true,
+    "hash": true,
+    "slideNumber": true,
+    "center": true,
+    "autoAnimateEasing": "cubic-bezier(0.4, 0, 0.2, 1)",
+    "autoAnimateDuration": 0.6,
+    "plugins": ["notes", "highlight", "zoom"]
+  }
+}

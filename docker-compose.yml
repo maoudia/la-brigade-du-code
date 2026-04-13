@@ -1,0 +1,55 @@
+# Works with Docker Engine or Podman (docker alias)
+# macOS: brew install docker  OR  brew install podman && brew install podman-compose
+# Windows: Podman Desktop provides docker + docker compose aliases
+# Linux: install docker-ce  OR  podman + podman-docker
+
+# La Brigade du Code — Development Stack
+# docker compose up --build
+# No version field — Docker Compose v5 spec (obsolete)
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: brigade_dev
+      POSTGRES_USER: brigade
+      POSTGRES_PASSWORD: brigade
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U brigade -d brigade_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/brigade_dev
+      SPRING_DATASOURCE_USERNAME: brigade
+      SPRING_DATASOURCE_PASSWORD: brigade
+      APP_ENV: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NUXT_PUBLIC_API_URL: http://backend:8080
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
