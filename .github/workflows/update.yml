@@ -45,7 +45,13 @@ jobs:
 
       - name: Upgrade tools and update lockfile
         run: |
-          mise upgrade --bump
+          # Constrained to current LTS majors — never bumps to non-LTS
+          # Java 25 LTS (next LTS: 29) — patch bumps only
+          mise upgrade java@25
+          # Node 24 LTS (even = LTS, odd = non-LTS) — patch bumps only
+          mise upgrade node@24
+          # Maven 3.9.x stable — patch bumps only, never 3.10 or 4.x
+          mise upgrade "aqua:apache/maven@3.9"
           mise lock
 
       - name: Check for changes
@@ -63,9 +69,16 @@ jobs:
           body: |
             ## Weekly tool update
 
-            mise detected outdated tools and bumped versions automatically.
+            mise bumped patch versions within pinned LTS majors only.
+            Major LTS jumps (e.g. Java 25→29, Node 24→26) are **manual decisions**.
 
-            ### Changes detected
+            | Tool | LTS pin | Policy |
+            |---|---|---|
+            | Java | `25` | Next LTS is `29` (2028) |
+            | Node | `24` | Even majors only — `25` is non-LTS |
+            | Maven | `3.9.x` | Stable minor — no `4.x` |
+
+            ### Outdated tools detected
             ```
             ${{ steps.outdated.outputs.outdated }}
             ```
