@@ -274,20 +274,20 @@ run_windows = "npm install"
 [tasks."slides:dev"]
 description = "Start reveal-md dev server with hot-reload on :1948"
 dir = "slides"
-run = "npx reveal-md slides.md --theme theme/brigade.css -w"
-run_windows = "npx reveal-md slides.md --theme theme/brigade.css -w"
+run = "npx reveal-md slides.md -w"
+run_windows = "npx reveal-md slides.md -w"
 
 [tasks."slides:build"]
 description = "Build slides from slides.md to slides/_dist/ via reveal-md"
 dir = "slides"
-run = "npx reveal-md slides.md --theme theme/brigade.css --static _dist --assets theme"
-run_windows = "npx reveal-md slides.md --theme theme/brigade.css --static _dist --assets theme"
+run = "npx reveal-md slides.md --static _dist --assets theme"
+run_windows = "npx reveal-md slides.md --static _dist --assets theme"
 
 [tasks."slides:pdf"]
 description = "Export slides to PDF via reveal-md (requires slides:dev running)"
 dir = "slides"
-run = "npx reveal-md slides.md --theme theme/brigade.css --print ../slides.pdf --print-size A4"
-run_windows = "npx reveal-md slides.md --theme theme/brigade.css --print ../slides.pdf --print-size A4"
+run = "npx reveal-md slides.md --print ../slides.pdf --print-size A4"
+run_windows = "npx reveal-md slides.md --print ../slides.pdf --print-size A4"
 
 [tasks."hosts:add"]
 description = "Add brigade.io to /etc/hosts for local prod simulation"

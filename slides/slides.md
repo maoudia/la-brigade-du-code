@@ -1,21 +1,9 @@
 ---
 title: La Brigade du Code 🍳
 # Source of truth: slides/slides.md
-# Build: mise run slides:build  (reveal-md → slides/_dist/)
-# Dev:   mise run slides:dev    (hot-reload on :1948)
-
-theme: ./theme/brigade.css
-highlightTheme: atom-one-dark
-revealOptions:
-  transition: slide
-  transitionSpeed: fast
-  controls: true
-  progress: true
-  hash: true
-  slideNumber: true
-  center: true
-  autoAnimateEasing: cubic-bezier(0.4, 0, 0.2, 1)
-  autoAnimateDuration: 0.6
+# Config:  slides/reveal.json  (theme, plugins, revealOptions)
+# Build:   mise run slides:build  (reveal-md → slides/_dist/)
+# Dev:     mise run slides:dev    (hot-reload on :1948)
 ---
 
 <!-- .slide: data-background-color="#0F1117" class="title-slide" -->
