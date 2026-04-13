@@ -77,8 +77,8 @@ mise run hosts:add
 # Start prod stack
 mise run docker:prod
 
-# brigade.io now resolves to localhost
-curl http://brigade.io:8080/recettes
+# brigade.io now resolves to localhost on port 80
+curl http://brigade.io/recettes
 
 # Clean up
 mise run hosts:remove
@@ -90,8 +90,8 @@ mise run hosts:add
 # Start prod stack
 mise run docker:prod
 
-# brigade.io now resolves to localhost
-Invoke-RestMethod http://brigade.io:8080/recettes
+# brigade.io now resolves to localhost on port 80
+Invoke-RestMethod http://brigade.io/recettes
 
 # Clean up
 mise run hosts:remove
@@ -101,5 +101,8 @@ mise run hosts:remove
 > 💡 `extra_hosts: brigade.io:host-gateway` in `docker-compose.prod.yml`
 > maps `brigade.io` inside the container to the host machine.
 > `hosts:add` maps it on the host itself.
+> The backend binds to port 80 in prod — no port needed in the URL.
 > Same trick used by teams to test prod configs without real DNS.
+>
+> ⚠️ Port 80 requires the Docker daemon to run as root (Docker Desktop: transparent). Podman rootless users: `sudo sysctl net.ipv4.ip_unprivileged_port_start=80`
 

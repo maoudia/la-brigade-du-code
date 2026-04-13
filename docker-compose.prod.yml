@@ -1,7 +1,8 @@
 # La Brigade du Code — Production Stack (local simulation)
 # Simulates production with brigade.io resolving to localhost
 # Run: mise run hosts:add   (adds 127.0.0.1 brigade.io to /etc/hosts)
-# Then: MISE_ENV=production mise run docker
+# Then: mise run docker:prod
+# Backend binds to port 80 → http://brigade.io/recettes (no port needed)
 
 services:
   postgres:
@@ -21,7 +22,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/brigade_prod
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-brigade}
