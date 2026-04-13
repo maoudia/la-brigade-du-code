@@ -1,8 +1,8 @@
 ---
 title: La Brigade du Code 🍳
-# Note: slides are now served via index.html (CDN-based)
-# Use: mise run slides:dev
-# Or open slides/index.html directly in a browser
+# Source of truth: slides/slides.md
+# Build: mise run slides:build  (reveal-md → slides/_dist/)
+# Dev:   mise run slides:dev    (hot-reload on :1948)
 
 theme: ./theme/brigade.css
 highlightTheme: atom-one-dark
@@ -26,17 +26,17 @@ revealOptions:
 
 <p class="subtitle">A mise-en-place codelab for full stack developers</p>
 
-<div class="tag-line">mise replaces nvm · sdkman · direnv · Makefile · npm scripts</div>
+<div class="tagline">mise replaces nvm · sdkman · direnv · Makefile · npm scripts</div>
 
 <div class="version-grid">
   <div class="v-badge">Java <span>25 LTS</span></div>
   <div class="v-badge">Node <span>24 LTS</span></div>
   <div class="v-badge">Spring Boot <span>4.0.5</span></div>
-  <div class="v-badge">Nuxt <span>4.4</span></div>
+  <div class="v-badge">Nuxt <span>4.2.2</span></div>
   <div class="v-badge">mise <span>2026.4.8</span></div>
 </div>
 
-<p class="github-link">github.com/maoudia/la-brigade-du-code</p>
+<p class="gh-link">github.com/maoudia/la-brigade-du-code</p>
 
 Note:
 Welcome! Today we go from "works on my machine" to "works on every machine".
@@ -100,42 +100,42 @@ This replaces all 6 tools. Let that sink in.
 
 <div class="labs-grid">
   <div class="lab-card" data-fragment-index="0">
-    <span class="lab-num">00</span>🔧
+    <span class="ln">00</span>🔧
     <strong>Onboarding</strong>
     <small>Bootstrap · Shims · IDE</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="1">
-    <span class="lab-num">01</span>🍳
+    <span class="ln">01</span>🍳
     <strong>La Mise en Place</strong>
     <small>Versions · Lockfile</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="2">
-    <span class="lab-num">02</span>🧅
+    <span class="ln">02</span>🧅
     <strong>Les Ingrédients</strong>
     <small>Env · MISE_ENV profiles</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="3">
-    <span class="lab-num">03</span>🥘
+    <span class="ln">03</span>🥘
     <strong>Les Recettes</strong>
     <small>Tasks · Cross-platform</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="4">
-    <span class="lab-num">04</span>🔥
+    <span class="ln">04</span>🔥
     <strong>Le Coup de Feu</strong>
     <small>Hooks · Watchers</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="5">
-    <span class="lab-num">05</span>🍽️
+    <span class="ln">05</span>🍽️
     <strong>Le Service</strong>
     <small>Full stack · Docker</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="6">
-    <span class="lab-num">06</span>👨‍🍳
+    <span class="ln">06</span>👨‍🍳
     <strong>Le Chef</strong>
     <small>Security · CI/CD · Docs</small>
   </div>
   <div class="lab-card fragment" data-fragment-index="7">
-    <span class="lab-num">07</span>🤖
+    <span class="ln">07</span>🤖
     <strong>Le Sous-Chef Digital</strong>
     <small>MCP · OpenCode · Copilot</small>
   </div>
@@ -155,15 +155,14 @@ Each lab builds on the previous. 20 minutes guided, 60 minutes autonomous.
 
 ### bash / zsh / fish
 ```bash
-git clone github.com/maoudia/\
-  la-brigade-du-code
+git clone https://github.com/maoudia/la-brigade-du-code
 cd la-brigade-du-code
 ./bin/setup
 ```
 
 ### Windows PowerShell
 ```powershell
-git clone ...
+git clone https://github.com/maoudia/la-brigade-du-code
 cd la-brigade-du-code
 .\bin\setup.ps1
 ```
@@ -267,6 +266,8 @@ MISE_ENV=development mise env | grep DATABASE_URL
 MISE_ENV=staging     mise env | grep DATABASE_URL
 MISE_ENV=production  mise env | grep LOG_LEVEL
 ```
+
+> Windows PowerShell: `$env:MISE_ENV="staging"; mise env | Select-String DATABASE_URL`
 
 <p class="callout-success">One repo. Three environments. Zero .env files committed.</p>
 
@@ -373,11 +374,11 @@ mise run service
 ```
 
 <div class="parallel-demo">
-  <div class="service-box backend">
+  <div class="sbox be">
     <span>☕ backend</span>
     Spring Boot started on :8080
   </div>
-  <div class="service-box frontend">
+  <div class="sbox fe">
     <span>🟢 frontend</span>
     Nuxt ready on :3000
   </div>
@@ -387,7 +388,11 @@ mise run service
 # Switch environments with Docker
 MISE_ENV=staging     mise run docker   # staging ports
 MISE_ENV=production  mise run docker   # prod config
+```
 
+> Windows PowerShell: `$env:MISE_ENV="staging"; mise run docker`
+
+```bash
 # Inspect config resolution chain
 mise config ls
 ```

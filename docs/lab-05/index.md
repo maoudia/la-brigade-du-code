@@ -32,10 +32,16 @@ run = "???"           # how to start Nuxt dev server?
 
 ## Environment switching with Docker
 
-```bash
+:::code-group
+```bash [bash / zsh]
 MISE_ENV=development mise run docker  # uses docker-compose.yml
 MISE_ENV=staging mise run docker      # uses docker-compose.staging.yml
 ```
+```powershell [PowerShell]
+$env:MISE_ENV="development"; mise run docker  # uses docker-compose.yml
+$env:MISE_ENV="staging";     mise run docker  # uses docker-compose.staging.yml
+```
+:::
 
 ## Steps
 
@@ -56,12 +62,29 @@ mise run service
 
 Open `http://localhost:3000` — see the 6 French recipes 🍳
 
-```bash
+:::code-group
+```bash [bash / zsh]
 curl http://localhost:8080/recettes
 # [{"nom":"Bouillabaisse","region":"Provence",...}]
 ```
+```powershell [PowerShell]
+Invoke-RestMethod http://localhost:8080/recettes
+# nom           region
+# ---           ------
+# Bouillabaisse Provence ...
+```
+:::
 
 ## Bonus 🌶️
 - `mise run docker` vs `mise run service` — startup time difference?
-- `MISE_ENV=staging mise env | grep DATABASE_URL`
+
+:::code-group
+```bash [bash / zsh]
+MISE_ENV=staging mise env | grep DATABASE_URL
+```
+```powershell [PowerShell]
+$env:MISE_ENV="staging"; mise env | Select-String DATABASE_URL
+```
+:::
+
 - `mise config ls --json` — how to use in CI?

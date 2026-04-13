@@ -2,10 +2,13 @@
   "name": "brigade-slides",
   "version": "0.1.0",
   "private": true,
-  "description": "La Brigade du Code — reveal.js slides (CDN-based, zero npm deps)",
+  "description": "La Brigade du Code — reveal.js slides (Markdown source, built with reveal-md)",
   "scripts": {
-    "dev": "npx --yes http-server . -p 1948 -o index.html --cors",
-    "build": "mkdir -p _dist && cp index.html _dist/ && echo Slides copied to _dist/",
-    "pdf": "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf"
+    "dev": "reveal-md slides.md --theme theme/brigade.css -w",
+    "build": "reveal-md slides.md --theme theme/brigade.css --static _dist --assets theme",
+    "pdf": "reveal-md slides.md --theme theme/brigade.css --print ../slides.pdf --print-size A4"
+  },
+  "devDependencies": {
+    "reveal-md": "6.1.4"
   }
 }

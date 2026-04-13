@@ -17,12 +17,20 @@
 ## Steps
 
 ### 1. Trust model
-```bash
+:::code-group
+```bash [bash / zsh]
 cd /tmp && git clone YOUR_REPO brigade-test
 cd brigade-test
 # mise prompts: "Trust it? [y/n]"
 mise trust
 ```
+```powershell [PowerShell]
+cd $env:TEMP; git clone YOUR_REPO brigade-test
+cd brigade-test
+# mise prompts: "Trust it? [y/n]"
+mise trust
+```
+:::
 
 ### 2. Paranoid mode
 ```bash
@@ -40,26 +48,46 @@ mise lock
 ```
 
 ### 4. Generate pre-commit hook
-```bash
+:::code-group
+```bash [bash / zsh]
 mise generate git-pre-commit --task check
 git add . && git commit -m "test"
 # [lint]   Checking recipes... ✓
 # [format] Formatting... ✓
 ```
+```powershell [PowerShell]
+mise generate git-pre-commit --task check
+git add .; git commit -m "test"
+# [lint]   Checking recipes... ✓
+# [format] Formatting... ✓
+```
+:::
 📖 https://mise.jdx.dev/cli/generate/git-pre-commit.html
 
 ### 5. Generate GitHub Action
-```bash
+:::code-group
+```bash [bash / zsh]
 mise generate github-action
 cat .github/workflows/mise.yml
 ```
+```powershell [PowerShell]
+mise generate github-action
+Get-Content .github\workflows\mise.yml
+```
+:::
 📖 https://mise.jdx.dev/cli/generate/github-action.html
 
 ### 6. Generate task docs
-```bash
+:::code-group
+```bash [bash / zsh]
 mise generate task-docs
 cat TASKS.md
 ```
+```powershell [PowerShell]
+mise generate task-docs
+Get-Content TASKS.md
+```
+:::
 
 ### 7. Deploy VitePress docs
 ```bash

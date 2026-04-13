@@ -265,29 +265,29 @@ mise install
 mise run banner-windows
 """
 
-[tasks."slides:dev"]
-description = "Start reveal.js slides — open index.html in browser or run http-server"
+[tasks."slides:install"]
+description = "Install slides dependencies (reveal-md)"
 dir = "slides"
-run = "npx --yes http-server . -p 1948 -o index.html --cors"
-run_windows = "npx --yes http-server . -p 1948 -o index.html --cors"
+run = "npm install"
+run_windows = "npm install"
+
+[tasks."slides:dev"]
+description = "Start reveal-md dev server with hot-reload on :1948"
+dir = "slides"
+run = "npx reveal-md slides.md --theme theme/brigade.css -w"
+run_windows = "npx reveal-md slides.md --theme theme/brigade.css -w"
 
 [tasks."slides:build"]
-description = "Build slides to static HTML (no npm install needed — CDN-based)"
+description = "Build slides from slides.md to slides/_dist/ via reveal-md"
 dir = "slides"
-run = "mkdir -p _dist/theme && cp index.html _dist/ && cp theme/*.css _dist/theme/ && echo 'Slides copied to _dist/'"
-run_windows = "if not exist _dist\\theme mkdir _dist\\theme && copy index.html _dist\\ && copy theme\\*.css _dist\\theme\\ && echo Slides copied"
+run = "npx reveal-md slides.md --theme theme/brigade.css --static _dist --assets theme"
+run_windows = "npx reveal-md slides.md --theme theme/brigade.css --static _dist --assets theme"
 
 [tasks."slides:pdf"]
-description = "Export slides to PDF via decktape (Puppeteer)"
+description = "Export slides to PDF via reveal-md (requires slides:dev running)"
 dir = "slides"
-run = "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf && echo '✓ Exported to slides.pdf'"
-run_windows = "npx --yes decktape reveal --size 1920x1080 http://localhost:1948 ../slides.pdf"
-
-[tasks."slides:install"]
-description = "No install needed — slides use CDN reveal.js 5.1.0"
-dir = "slides"
-run = "echo 'No npm install needed — slides/index.html uses CDN'"
-run_windows = "echo No npm install needed"
+run = "npx reveal-md slides.md --theme theme/brigade.css --print ../slides.pdf --print-size A4"
+run_windows = "npx reveal-md slides.md --theme theme/brigade.css --print ../slides.pdf --print-size A4"
 
 [tasks."hosts:add"]
 description = "Add brigade.io to /etc/hosts for local prod simulation"
