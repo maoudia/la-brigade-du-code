@@ -1,0 +1,85 @@
+@startuml mise-architecture
+skinparam backgroundColor white
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam PackageBorderColor #94A3B8
+skinparam PackageBorderThickness 1
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #1E293B
+skinparam PackageBackgroundColor #F8FAFC
+
+skinparam ComponentBorderColor #94A3B8
+skinparam ComponentBorderThickness 1
+skinparam ComponentFontColor #1E293B
+skinparam ComponentFontSize 12
+skinparam ComponentShadowing false
+
+skinparam NoteBorderColor #94A3B8
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteFontColor #78350F
+skinparam NoteFontSize 11
+
+title "<b>mise — Architecture Overview</b>\nLa Brigade du Code"
+
+package "Your Repository" #EFF6FF {
+  [mise.toml] as toml        #DBEAFE
+  [mise.lock] as lock        #DBEAFE
+  [bin/mise] as bootstrap    #DBEAFE
+  [.env.local] as envlocal   #FFE4E6
+  note right of envlocal : gitignored\nsecrets only
+}
+
+package "mise Engine" #F5F3FF {
+  [Tool Manager] as tools    #EDE9FE
+  [Task Runner] as tasks     #EDE9FE
+  [Env Manager] as env       #EDE9FE
+  [Trust System] as trust    #EDE9FE
+  [Lockfile System] as lockfile #EDE9FE
+}
+
+package "Runtimes" #FFFBEB {
+  [Java 25] as java          #FEF3C7
+  [Node 24] as node          #FEF3C7
+  [Maven 3.9.14] as maven    #FEF3C7
+}
+
+package "Shims (~/.local/share/mise/shims)" #F0FDFA {
+  [java shim] as jshim       #CCFBF1
+  [node shim] as nshim       #CCFBF1
+  [mvn shim] as mshim        #CCFBF1
+}
+
+package "IDEs / Editors" #FAFAF9 {
+  [IntelliJ IDEA] as intellij #F5F5F4
+  [VSCode] as vscode          #F5F5F4
+  [Terminal] as terminal      #F5F5F4
+}
+
+toml      --> tools     : defines versions
+toml      --> tasks     : defines tasks
+toml      --> env       : defines env vars
+lock      --> lockfile  : pins checksums
+bootstrap ..> tools     : auto-installs mise\nif not present
+envlocal  --> env       : merged via _.file
+
+tools --> java
+tools --> node
+tools --> maven
+
+java  --> jshim
+node  --> nshim
+maven --> mshim
+
+jshim --> intellij : transparent\nversion routing
+nshim --> vscode   : transparent\nversion routing
+jshim --> terminal
+nshim --> terminal
+mshim --> terminal
+
+trust --> toml : mise trust required\nbefore hooks run
+
+@enduml

@@ -1,0 +1,12 @@
+# =============================================================
+# Production environment — real infrastructure
+# Usage: MISE_ENV=production mise run service
+# Secrets come from GitHub Secrets / Vault — not here
+# =============================================================
+
+[env]
+APP_ENV              = "production"
+NUXT_PUBLIC_API_URL  = "https://brigade.io"  # run: mise run hosts:add first
+LOG_LEVEL            = "WARN"
+COMPOSE_FILE         = "docker-compose.prod.yml"
+# DATABASE_URL loaded from .env.local or CI secrets — never committed

@@ -1,0 +1,49 @@
+# La Brigade du Code — Production Stack (local simulation)
+# Simulates production with brigade.io resolving to localhost
+# Run: mise run hosts:add   (adds 127.0.0.1 brigade.io to /etc/hosts)
+# Then: mise run docker:prod
+# Backend binds to port 80 → http://brigade.io/recettes (no port needed)
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: brigade_prod
+      POSTGRES_USER: ${DB_USER:-brigade}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-brigade}
+    volumes:
+      - postgres_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-brigade}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    ports:
+      - "80:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/brigade_prod
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-brigade}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-brigade}
+      APP_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    extra_hosts:
+      - "brigade.io:host-gateway"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "443:3000"
+    environment:
+      NUXT_PUBLIC_API_URL: http://backend:8080
+    depends_on:
+      - backend
+    extra_hosts:
+      - "brigade.io:host-gateway"
+
+volumes:
+  postgres_prod:

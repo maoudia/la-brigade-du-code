@@ -1,0 +1,44 @@
+# Lab 04 — Solution
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = { version = "24", postinstall = "npm install -g pnpm" }
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "Moncef"
+APP_ENV   = "development"
+
+[hooks]
+enter       = { task = "banner" }
+leave       = "echo 'Bonne soiree $CHEF_NAME, la cuisine est fermee 🔒'"
+postinstall = "echo 'Just installed: $MISE_INSTALLED_TOOLS'"
+
+[[watch_files]]
+patterns = ["mise.toml"]
+run      = "echo 'mise.toml changed — reloading config 🔄'"
+
+[tasks.banner]
+description = "Show the kitchen welcome banner"
+run = """
+echo ""
+echo "======================================="
+echo "   Bienvenue en cuisine, $CHEF_NAME ! 👨‍🍳"
+echo "======================================="
+echo "   Java    : $(java --version 2>&1 | head -1)"
+echo "   Node    : $(node --version)"
+echo "   ENV     : $APP_ENV"
+echo "======================================="
+echo ""
+"""
+run_windows = """
+echo.
+echo =======================================
+echo    Bienvenue en cuisine, %CHEF_NAME% !
+echo    ENV     : %APP_ENV%
+echo =======================================
+echo.
+"""

@@ -1,0 +1,13 @@
+{
+  "// mise shims — add to your shell profile first": "eval \"$(mise activate zsh --shims)\"",
+  "terminal.integrated.automationProfile.osx": {
+    "path": "/usr/bin/zsh",
+    "args": ["--login"]
+  },
+  "java.jdt.ls.java.home": "${env:HOME}/.local/share/mise/shims/java",
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "mise.toml": "toml",
+    "mise.*.toml": "toml"
+  }
+}

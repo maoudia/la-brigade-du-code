@@ -1,0 +1,50 @@
+# Lab 06 — Le Chef
+# TODO: enable strict lockfile + paranoid mode
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[settings]
+experimental = true
+lockfile = true
+locked   = false
+paranoid = false
+
+[env]
+CHEF_NAME = "???"
+APP_ENV   = "production"
+_.file    = ".env.local"
+
+[tasks.lint]
+description = "Lint — pre-commit"
+run         = "echo 'Checking recipes... OK'"
+run_windows = "echo Checking recipes... OK"
+
+[tasks.format]
+description = "Format mise.toml"
+run         = "mise fmt"
+run_windows = "mise fmt"
+
+[tasks.check]
+description = "Run all checks"
+depends     = ["lint", "format"]
+
+[tasks."docs:dev"]
+description = "Start VitePress docs"
+dir         = "docs"
+run         = "npx vitepress dev"
+run_windows = "npx vitepress dev"
+
+[tasks."docs:build"]
+description = "Build VitePress docs"
+dir         = "docs"
+run         = "npx vitepress build"
+run_windows = "npx vitepress build"
+
+[tasks.release]
+description = "Deploy to GitHub Pages"
+confirm     = "Deploy to GitHub Pages?"
+depends     = ["docs:build"]
+run         = "echo 'Deploying... check GitHub Actions'"

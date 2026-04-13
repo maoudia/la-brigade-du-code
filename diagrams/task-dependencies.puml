@@ -1,0 +1,67 @@
+@startuml task-dependencies
+skinparam backgroundColor white
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam ArrowFontColor #475569
+skinparam ArrowFontSize 11
+
+skinparam RectangleBorderColor #94A3B8
+skinparam RectangleBorderThickness 1
+skinparam RectangleFontColor #1E293B
+skinparam RectangleFontSize 12
+skinparam RectangleShadowing false
+
+skinparam NoteBorderColor #94A3B8
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteFontColor #78350F
+skinparam NoteFontSize 11
+
+title "<b>mise Task Dependency Graph</b>\nLa Brigade du Code"
+
+' ── Kitchen tasks (cooking chain) ────────────────────────────
+rectangle "serve\n<size:10>(mise run serve)</size>" as serve     #DBEAFE
+rectangle "plate\n<size:10>(dresser)</size>"        as plate     #EDE9FE
+rectangle "cook\n<size:10>(cuire)</size>"           as cook      #EDE9FE
+rectangle "prep\n<size:10>(preparer)</size>"        as prep      #EDE9FE
+rectangle "announce\n<size:10>(annoncer)</size>"    as announce  #EDE9FE
+
+' ── Full-stack service ────────────────────────────────────────
+rectangle "service\n<size:10>(full stack)</size>"   as service   #DBEAFE
+rectangle "backend\n<size:10>(Spring Boot :8080)</size>" as backend  #FFEDD5
+rectangle "frontend\n<size:10>(Nuxt :3000)</size>"  as frontend  #DCFCE7
+
+' ── Quality chain ─────────────────────────────────────────────
+rectangle "check\n<size:10>(pre-commit)</size>"     as check     #DBEAFE
+rectangle "lint"                                    as lint      #F5F5F4
+rectangle "format"                                  as format    #F5F5F4
+
+' ── Docs / deploy ─────────────────────────────────────────────
+rectangle "release\n<size:10>(GitHub Pages)</size>" as release   #F3E8FF
+rectangle "docs:build\n<size:10>(VitePress)</size>" as docsbuild #EDE9FE
+
+serve -down-> plate : depends
+plate -down-> cook  : depends
+cook  -down-> prep  : depends
+
+service -down-> backend  : parallel
+service -down-> frontend : parallel
+
+check -down-> lint   : depends
+check -down-> format : depends
+
+release -down-> docsbuild : depends
+
+note right of service
+  mise runs backend
+  AND frontend in parallel
+  -- cross-platform --
+  No & operator needed
+end note
+
+note right of check
+  runs before every
+  git commit via pre-commit
+end note
+
+@enduml

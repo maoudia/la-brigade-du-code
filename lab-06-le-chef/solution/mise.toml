@@ -1,0 +1,30 @@
+# Lab 06 — Solution
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[settings]
+experimental = true
+lockfile = true
+locked   = true
+paranoid = true
+
+[env]
+CHEF_NAME = "Moncef"
+APP_ENV   = "production"
+_.file    = ".env.local"
+
+[tasks.lint]
+description = "Lint"
+run         = "echo 'Checking... OK'"
+run_windows = "echo Checking... OK"
+
+[tasks.format]
+description = "Format"
+run         = "mise fmt"
+run_windows = "mise fmt"
+
+[tasks.check]
+depends = ["lint", "format"]

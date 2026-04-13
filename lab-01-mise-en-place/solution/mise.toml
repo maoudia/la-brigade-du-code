@@ -1,0 +1,25 @@
+# Lab 01 — Solution
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[settings]
+experimental = true
+lockfile = true
+
+[tasks.brigade]
+description = "Verify the brigade is ready for service"
+run = """
+echo ""
+echo "======================================="
+echo "   La Brigade du Code 🍳"
+echo "======================================="
+echo "   Java  : $(java --version 2>&1 | head -1)"
+echo "   Node  : $(node --version)"
+echo "   Maven : $(mvn --version 2>&1 | head -1)"
+echo "======================================="
+echo ""
+"""
+run_windows = "java --version && node --version && mvn --version"

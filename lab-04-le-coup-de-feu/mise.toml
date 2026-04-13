@@ -1,0 +1,24 @@
+# Lab 04 — Le Coup de Feu
+# TODO: fill in the hooks
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = { version = "24", postinstall = "???" }
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "???"
+APP_ENV   = "development"
+
+[hooks]
+enter       = "???"
+leave       = "???"
+postinstall = "???"
+
+# TODO: uncomment and complete
+# [[watch_files]]
+# patterns = ["???"]
+# run      = "???"

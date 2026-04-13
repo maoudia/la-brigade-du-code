@@ -1,0 +1,42 @@
+# Lab 05 — Le Service
+# TODO: wire up the parallel service task
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "???"
+APP_ENV   = "development"
+_.file    = ".env.local"
+
+[tasks.service]
+description = "Start the full brigade in parallel"
+depends     = ["???", "???"]
+
+[tasks.backend]
+description = "Start Spring Boot backend on :8080"
+dir         = "???"
+run         = "???"
+run_windows = "???"
+
+[tasks.frontend]
+description = "Start Nuxt frontend on :3000"
+dir         = "???"
+run         = "???"
+run_windows = "???"
+
+[tasks.install-frontend]
+description = "Install frontend dependencies"
+dir = "frontend"
+run = "npm install"
+run_windows = "npm install"
+
+[tasks.docker]
+description = "Start full stack with Docker Compose"
+run = "docker compose up --build"
+run_windows = "docker compose up --build"

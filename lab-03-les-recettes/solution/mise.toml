@@ -1,0 +1,43 @@
+# Lab 03 — Solution
+
+[settings]
+experimental = true
+
+[tools]
+java  = "25"
+node  = "24"
+"aqua:apache/maven" = "3.9.14"
+
+[env]
+CHEF_NAME = "Moncef"
+APP_ENV   = "development"
+
+[tasks.prep]
+description = "Prepare ingredients"
+run         = "echo '[prep]  Ingredients checked and ready ✓'"
+run_windows = "echo [prep]  Ingredients checked and ready"
+
+[tasks.cook]
+description = "Cook the dish"
+depends     = ["prep"]
+run         = "echo '[cook]  Cooking in progress... ✓'"
+run_windows = "echo [cook]  Cooking in progress..."
+
+[tasks.plate]
+description = "Plate the dish"
+depends     = ["cook"]
+run         = "echo '[plate] Plating complete ✓'"
+run_windows = "echo [plate] Plating complete"
+
+[tasks.serve]
+description = "Serve the dish"
+depends     = ["plate"]
+confirm     = "Are you sure the dish is ready to serve?"
+run         = "echo '[serve] Bon appetit ! Service is open. 🍽️'"
+run_windows = "echo [serve] Bon appetit ! Service is open."
+
+[tasks.announce]
+description = "Announce a dish to the dining room"
+usage       = 'arg "<dish>" help="Name of the dish to announce"'
+run         = 'echo "Tonight we serve: $usage_dish !"'
+run_windows = 'echo Tonight we serve: %usage_dish% !'

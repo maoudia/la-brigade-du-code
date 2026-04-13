@@ -1,0 +1,15 @@
+{
+  "name": "brigade-frontend",
+  "version": "0.1.0",
+  "description": "La Brigade du Code — Nuxt 4.4 Frontend",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "nuxt": "4.2.2"
+  }
+}
