@@ -7,6 +7,10 @@ title: La Brigade du Code 🍳
 theme: ./theme/brigade.css
 highlightTheme: atom-one-dark
 revealOptions:
+  width: 1600
+  height: 900
+  minScale: 0.1
+  maxScale: 1.0
   transition: slide
   transitionSpeed: fast
   controls: true
