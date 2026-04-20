@@ -16,7 +16,7 @@ VITEPRESS_VERSION = "1.6.4"
 [tools]
 java = "{{vars.JAVA_VERSION}}"
 node = "{{vars.NODE_VERSION}}"
-"aqua:apache/maven" = "{{vars.MAVEN_VERSION}}"
+"aqua:apache/maven" = "3.9"
 
 [settings]
 experimental = true
